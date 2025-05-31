@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 10 ;
 const DEFAULT_PAGE = 1;
 
 const Pagination = ({ data, renderRow, pageSize = PAGE_SIZE }) => {
@@ -13,14 +13,62 @@ const Pagination = ({ data, renderRow, pageSize = PAGE_SIZE }) => {
 
   const totalPages = Math.ceil(data.length / pageSize);
 
-  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+
+
+
+  
+
+  
+  const generatePageButtons = () => {
+    const buttons = [];
+  
+    if (totalPages <= 7) {
+
+      for (let i = 1; i <= totalPages; i++) {
+        buttons.push(i);
+      }
+    } else {
+
+      buttons.push(1);
+  
+   
+      let start = Math.max(2, currentPage - 1);
+      let end = Math.min(totalPages - 1, currentPage + 1);
+  
+   
+      if (start > 2) {
+        buttons.push("...");
+      }
+  
+      for (let i = start; i <= end; i++) {
+        buttons.push(i);
+      }
+
+      if (end < totalPages - 1) {
+        buttons.push("...");
+      }
+  
+     
+      buttons.push(totalPages);
+    }
+  
+    return buttons;
+  };
+  
+  
+
+
 
   const handleNextPage = () => {
-    setCurrentPage(currentPage + 1);
+    if (currentPage < totalPages) {
+        setCurrentPage(currentPage + 1);
+      }
   };
 
   const handlePreviousPage = () => {
-    setCurrentPage(currentPage - 1);
+    if (currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+      }
   };
 
   return (
@@ -33,26 +81,41 @@ const Pagination = ({ data, renderRow, pageSize = PAGE_SIZE }) => {
         ))}
       </div>
       <div className="pagination-buttons flex items-center justify-center gap-4">
-        <button onClick={handlePreviousPage} disabled={currentPage === 1}
-            className={`px-2.5 py-1 border rounded-md border-blue-400 ${currentPage === 1 ? "cursor-no-drop": "cursor-pointer"} hover:bg-blue-500 hover:border-transparent transition-all ease-in-out duration-300`}
+        <button
+          onClick={handlePreviousPage}
+          disabled={currentPage === 1}
+          className={`px-2.5 py-1 border rounded-md border-blue-400 ${
+            currentPage === 1
+              ? " text-zinc-600 border-zinc-700 opacity-0"
+              : "cursor-pointer"
+          }  hover:border-transparent transition-all ease-in-out duration-300`}
         >
           Previous
         </button>
-        {pageNumbers.map((pageNumber) => (
+        {generatePageButtons().map((pageNumber) => (
           <button
             className={`px-2.5 py-1 border rounded-md border-blue-400 cursor-pointer hover:bg-blue-500 hover:border-transparent transition-all ease-in-out duration-300
-            ${currentPage === pageNumber ? "bg-blue-500 text-white" : "bg-transparent text-blue-400"}}
+            ${
+              currentPage === pageNumber
+                ? "bg-blue-500 text-white"
+                : "bg-transparent text-blue-400"
+            }}
             `}
             key={pageNumber}
-            onClick={()=> setCurrentPage(pageNumber)}
-
+            onClick={() => setCurrentPage(pageNumber)}
           >
             {pageNumber}
           </button>
         ))}
-        <button onClick={handleNextPage} disabled={currentPage === totalPages}
-            className={`px-2.5 py-1 border rounded-md border-blue-400 ${currentPage === totalPages ? "cursor-no-drop": "cursor-pointer"} hover:bg-blue-500 hover:border-transparent transition-all ease-in-out duration-300`}
-            >
+        <button
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+          className={`px-2.5 py-1 border rounded-md border-blue-400 ${
+            currentPage === totalPages
+              ? " text-zinc-600 border-zinc-700 opacity-0"
+              : "cursor-pointer"
+          } hover:bg-blue-500 hover:border-transparent transition-all ease-in-out duration-300`}
+        >
           Next
         </button>
       </div>
