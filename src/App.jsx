@@ -1,9 +1,14 @@
-import React from 'react'
+import React from "react";
+import Pagination from "./Components/Pagination";
+
 
 const App = () => {
-  return (
-    <div>App</div>
-  )
-}
+  const data = Array.from({ length: 100 }, (_, i) => i + 1);
+  console.log(data);
 
-export default App
+  return <div className="">
+    <Pagination data = {data} />
+  </div>;
+};
+
+export default App;
